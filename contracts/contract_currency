@@ -1,33 +1,24 @@
-contract tokenRecipient { 
-	function receiveApproval(address _from, uint256 _value, address _token, bytes _extraData); 
-}
-
 contract MyToken {
-    /* Public variables of the token */
+    
     string public name;
-    //string public symbol;
     uint8 public decimals;
     uint256 public totalSupply;
-
-    /* This creates an array with all balances */
     mapping (address => uint256) public coinBalance;
     mapping (address => mapping (address => uint256)) public allowance;
-
-    /* This generates a public event on the blockchain that will notify clients */
     event Transfer(address indexed from, address indexed to, uint256 value);
 
     /* Initializes contract with initial supply tokens to the creator of the contract */
     function MyToken(uint256 initialSupply,string tokenName,uint8 decimalUnits/*,string tokenSymbol*/) {
-        coinBalance[msg.sender] = initialSupply;              // Give the creator all initial tokens
+        coinBalance[msg.sender] = initialSupply;              
         totalSupply = initialSupply;                        
         name = tokenName;                                   
         decimals = decimalUnits;                            
-        msg.sender.send(msg.value);                         // Send back any ether sent accidentally
+        msg.sender.send(msg.value);                         
     }
 
     /* Send coins */
     function transfer(address _to, uint256 _value) {
-        if (coinBalance[msg.sender] < _value) throw;           // Check if the sender has enough
+        if (coinBalance[msg.sender] < _value) throw;           
         if (coinBalance[_to] + _value < coinBalance[_to]) throw; 
         coinBalance[msg.sender] -= _value;                     
         coinBalance[_to] += _value;                         
@@ -44,7 +35,7 @@ contract MyToken {
 
     /* A contract attempts to get the coins */
     function transferFrom(address _from, address _to, uint256 _value) returns (bool success) {
-        if (coinBalance[_from] < _value) throw;                 // Check if the sender has enough
+        if (coinBalance[_from] < _value) throw;                
         if (coinBalance[_to] + _value < coinBalance[_to]) throw;  
         if (_value > allowance[_from][msg.sender]) throw;  
         coinBalance[_from] -= _value;                          
@@ -58,7 +49,7 @@ contract MyToken {
     
     function kill()
     { 
-        suicide(creator);  // kills this contract and sends remaining funds back to creator
+        suicide(creator);  
 }
 }
 
