@@ -104,7 +104,7 @@ contract rockpaperscissors
     
     function checkNotNull() constant returns (bool x)
     {
-        return (bytes(player1Choice).length == 0 && bytes(player2Choice).length == 0);
+         return (bytes(player1Choice).length==0 && bytes(player2Choice).length==0);
     }
 
 }
